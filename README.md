@@ -14,31 +14,33 @@ You are required to help the manager to predict the right group of the new custo
 
 ## Neural Network Model
 
-![image](https://github.com/user-attachments/assets/c3611057-f56d-44fd-935f-3bafd45398f8)
+![Screenshot 2025-03-23 132501](https://github.com/user-attachments/assets/c5acd878-ab98-4b64-8192-5d2e39e7301d)
+
 
 ## DESIGN STEPS
 
-
 ### STEP 1:
-Data Preprocessing: Clean, normalize, and split data into training, validation, and test sets.
+Understand the classification task and identify input and output variables.
 
 ### STEP 2:
-Model Design:
- * Input Layer: Number of neurons = features.
- * Hidden Layers: 2 layers with ReLU activation.
- * Output Layer: 4 neurons (segments A, B, C, D) with softmax activation.
+Gather data, clean it, handle missing values, and split it into training and test sets.
 
 ### STEP 3:
-Model Compilation: Use categorical crossentropy loss, Adam optimizer, and track accuracy.
+Normalize/standardize features, encode categorical labels, and reshape data if needed.
 
-## STEP 4:
-Training: Train with early stopping, batch size (e.g., 32), and suitable epochs.
+### STEP 4:
+Choose the number of layers, neurons, and activation functions for your neural network.
 
-## STEP 5:
-Evaluation: Assess using accuracy, confusion matrix, precision, and recall.
+### STEP 5:
+Select a loss function (e.g., binary cross-entropy), optimizer (e.g., Adam), and metrics (e.g., accuracy).
 
-## STEP 6:
-Optimization: Tune hyperparameters (layers, neurons, learning rate, batch size).
+### STEP 6:
+Feed training data into the model, run multiple epochs, and monitor the loss and accuracy.
+
+### STEP 7:
+Save the trained model, export it if needed, and deploy it for real-world use.
+
+
 ## PROGRAM
 
 ### Name: S LALIT CHANDRAN
@@ -48,44 +50,46 @@ Optimization: Tune hyperparameters (layers, neurons, learning rate, batch size).
 class PeopleClassifier(nn.Module):
     def __init__(self, input_size):
         super(PeopleClassifier, self).__init__()
-        self.fc1 = nn.Linear(input_size,32)
-        self.fc2 = nn.Linear(32,16)
-        self.fc3 = nn.Linear(16,8)
-        self.fc4 = nn.Linear(8,4)
+        self.fc1 = nn.Linear(input_size, 32)
+        self.fc2 = nn.Linear(32, 16)
+        self.fc3 = nn.Linear(16, 8)
+        self.fc4 = nn.Linear(8, 4)
+    def forward(self, x):
+        x=F.relu(self.fc1(x))
+        x=F.relu(self.fc2(x))
+        x=F.relu(self.fc3(x))
+        x=self.fc4(x)
+        return x
+        
 
-    def forward(self,x):
-      x = F.relu(self.fc1(x))
-      x = F.relu(self.fc2(x))
-      x = F.relu(self.fc3(x))
-      x = self.fc4(x)
-      return x
 ```
 ```python
 # Initialize the Model, Loss Function, and Optimizer
-model = PeopleClassifier(input_size=X_train.shape[1])
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(),lr=0.01)
+model =PeopleClassifier(input_size=X_train.shape[1])
+criterion =nn.CrossEntropyLoss()
+optimizer =optim.Adam(model.parameters(),lr=0.001)
+
 ```
 ```python
-def train_model(model, train_loader,criterion,optimizer,epochs):
+def train_model(model,train_loader,criterion,optimizer,epochs):
   for epoch in range(epochs):
     model.train()
-    for X_batch, y_batch in train_loader:
+    for X_batch,y_batch in train_loader:
       optimizer.zero_grad()
-      output = model(X_batch)
-      loss = criterion(output,y_batch)
+      outputs=model(X_batch)
+      loss=criterion(outputs,y_batch)
       loss.backward()
       optimizer.step()
 
-    if (epoch + 1) % 10 == 0:
-      print(f"Epoch {epoch+1}/{epochs}, Loss: {loss.item():.4f}")
+  if(epoch+1)%10==0:
+    print(f'Epoch [{epoch+1}/{epochs}],Loss:{loss.item():.4f}')
 ```
 
 
 
 ## Dataset Information
 
-![WhatsApp Image 2025-03-20 at 19 58 55_c20a11c6](https://github.com/user-attachments/assets/9bc4fb25-c3ab-4ad2-a87e-58cccc9668ae)
+![Screenshot 2025-03-23 131957](https://github.com/user-attachments/assets/ac17f34d-0ca5-4870-97b6-6c25ddd72d37)
 
 
 ## OUTPUT
@@ -94,22 +98,21 @@ def train_model(model, train_loader,criterion,optimizer,epochs):
 
 ### Confusion Matrix
 
-![WhatsApp Image 2025-03-20 at 19 58 08_529eb610](https://github.com/user-attachments/assets/c93c392d-7cbf-4d9c-b106-26e43d527e70)
-
+![Screenshot 2025-04-16 212611](https://github.com/user-attachments/assets/97f77842-b13b-4b8b-801d-87db7aa17586)
 
 
 
 ### Classification Report
 
-![WhatsApp Image 2025-03-20 at 19 57 50_0c79c719](https://github.com/user-attachments/assets/a6e743d6-6867-42ce-bdc1-05ac9f006965)
+![Screenshot 2025-04-16 212620](https://github.com/user-attachments/assets/4709a140-1a6a-467f-bf92-547a83cef1ec)
 
 
 
 ### New Sample Data Prediction
 
-![WhatsApp Image 2025-03-20 at 19 58 19_443776bc](https://github.com/user-attachments/assets/e93aa81d-2196-4741-9ecb-8edc142eab31)
+![Screenshot 2025-04-16 212634](https://github.com/user-attachments/assets/7606412f-1a18-4680-a202-e2ee0909167b)
+
 
 
 ## RESULT
 Thus a neural network classification model for the given dataset is executed successfully.
-
